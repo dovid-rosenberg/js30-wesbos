@@ -10,6 +10,7 @@
 
     <div class="clock">
       <div class="clock-face">
+        <div class="center-point"></div>
         <div class="hand hour-hand"></div>
         <div class="hand min-hand"></div>
         <div class="hand second-hand"></div>
@@ -19,7 +20,7 @@
 
   <style>
     html {
-      background: #018DED url(https://unsplash.it/1500/1000?image=881&blur=5);
+      background: #018DED url(https://unsplash.it/1500/1000?image=921&blur=5);
       background-size: cover;
       font-family: 'helvetica neue';
       text-align: center;
@@ -57,17 +58,73 @@
       transform: translateY(-3px); /* account for the height of the clock hands */
     }
 
-    .hand {
-      width: 50%;
+    .center-point {
+      width: 6px;
       height: 6px;
+      top: 50%;
+      right:49%;
       background: black;
       position: absolute;
+    }
+
+    .hand {
+      height: 6px;
       top: 50%;
+      right: 50%;
+      background: black;
+      position: absolute;
+      transform: rotate(90deg);
+      transition: all 0.5s;
+      /*transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);*/
+      transform-origin: 100%;
+    }
+
+    .second-hand {
+      width: 50%;
+    }
+
+    .min-hand {
+      width: 40%;
+    }
+
+    .hour-hand {
+      width: 30%;
     }
 
   </style>
 
   <script>
+    const secondHand = document.querySelector('.second-hand')
+    const minuteHand = document.querySelector('.min-hand')
+    const hourHand = document.querySelector('.hour-hand')
+
+    function setDate() {
+      const now = new Date()
+      setHandValue(now, 'second', secondHand)
+      setHandValue(now, 'minute', minuteHand)
+      setHandValue(now, 'hour', hourHand)
+    }
+
+    const handDegreeMap = {
+      second: ({ seconds }) => {
+          return ((seconds / 60) * 360) + 90
+        },
+      minute: ({ seconds, minutes }) => {
+          return ((minutes / 60) * 360) + ((seconds / 60) * 6) + 90
+        },
+      hour: ({ minutes, hours }) => {
+          return ((hours / 12) * 360) + ((minutes / 60) * 30) + 90
+        },
+    }
+    function setHandValue(now, hand, handEl) {
+      const seconds = now.getSeconds()
+      const minutes = now.getMinutes()
+      const hours = now.getHours()
+      const degrees = handDegreeMap[hand]({ seconds, minutes, hours })
+      handEl.style.transform = `rotate(${degrees}deg)`
+    }
+
+    setInterval(setDate, 500)
 
 
   </script>
