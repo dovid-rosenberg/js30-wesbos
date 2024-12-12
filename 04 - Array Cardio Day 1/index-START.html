@@ -38,17 +38,38 @@
     
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
+    const fifteen = inventors.filter(i => i.year <= 1500)
+    console.log(fifteen)
 
     // Array.prototype.map()
     // 2. Give us an array of the inventors first and last names
+    const fullNames = inventors.map(i => `${i.first} ${i.last}`)
+    console.log(fullNames)
 
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
+    const ordered = inventors.sort((a, b) => {
+      return a.year > b.year ? 1 : -1
+    })
+
+    console.table(ordered)
 
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live all together?
+    const totalLivingYears = inventors.reduce((total, inventor) => {
+      inventorTotal = inventor.passed - inventor.year
+      return total + inventorTotal
+    }, 0 )
+    console.log(totalLivingYears)
 
     // 5. Sort the inventors by years lived
+    const sortedYears = inventors.sort((a, b) => {
+      const aYears = a.passed - a.year
+      const bYears = b.passed - b.year
+      return aYears > bYears ? 1 : -1
+    })
+
+    console.table(sortedYears)
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
@@ -56,10 +77,26 @@
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
+    const pSort = people.sort((a, b) => {
+      const [aLast, aFirst] = a.split(',')
+      const [bLast, bFirst] = b.split(',')
+
+      return aLast > bLast ? 1 : -1
+    })
+
+    console.table(pSort)
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+
+    const vehicles = data.reduce((acc, curr) => {
+      if(!acc[curr]) acc[curr] = 1
+      else acc[curr] ++
+      return acc
+    }, {})
+
+    console.log(vehicles)
 
   </script>
 </body>
